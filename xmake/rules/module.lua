@@ -13,10 +13,6 @@ rule("module.component")
         else
             assert(false, "Unknown build kind")
         end
-
-        if is_plat("windows") then
-            target:add("defines", "WIN32_LEAN_AND_MEAN")
-        end
     end)
 rule_end()
 

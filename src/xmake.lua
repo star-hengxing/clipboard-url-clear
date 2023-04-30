@@ -1,3 +1,7 @@
+if is_plat("windows") then
+    add_defines("WIN32_LEAN_AND_MEAN")
+end
+
 target("component")
     set_kind("$(kind)")
     add_rules("module.component")

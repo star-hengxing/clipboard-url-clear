@@ -1,29 +1,37 @@
+#include <string_view>
+#include <string>
+
+#include <fast_io.h>
+
 #include "clipboard.hpp"
+
+static constexpr auto B23_TV = std::string_view{"b23.tv/"};
+static constexpr auto ZHIHU = std::string_view{"zhihu.com"};
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
     // TODO: use regex
-    auto start = string.find("https://");
-    if (start == std::string_view::npos)
-        return {};
-
-    auto bili = string.find("b23.tv/", start);
-    if (bili != std::string_view::npos)
+    auto bilibili_start = string.find(B23_TV);
+    if (bilibili_start != std::string_view::npos)
     {
         // short url identifier has 7 byte
-        const auto link_size = std::string_view{"https://b23.tv/"}.size() + 7;
-        if (start + link_size >= string.size())
+        const auto link_size = B23_TV.size() + 7;
+        if (bilibili_start + link_size > string.size())
             return {};
 
-        return b23_to_source(string.substr(start, link_size));
+        const auto url = fast_io::concat("https://", string.substr(bilibili_start, link_size));
+        return b23_to_source(url);
     }
+
+    auto start = string.find(ZHIHU);
+    if (start == std::string_view::npos)
+        return {};
 
     auto end = string.find('?', start);
     if (end != std::string_view::npos)
     {
-        auto url = string.substr(start, end - start);
-        if (url.find("zhihu.com", start) != std::string_view::npos)
-            return std::string{url};
+        const auto url = fast_io::concat("https://", string.substr(start, end - start));
+        return std::string{url};
     }
 
     return {};
