@@ -1,0 +1,12 @@
+.vs/
+.vscode/
+.xmake/
+.cache/
+vsxmake*/
+
+# build
+build/
+precompile.hpp
+
+# resource
+assets/
