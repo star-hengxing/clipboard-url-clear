@@ -6,6 +6,7 @@
 #include "clipboard.hpp"
 
 static constexpr auto B23_TV = std::string_view{"b23.tv/"};
+static constexpr auto BILIBILI = std::string_view{"bilibili.com"};
 static constexpr auto ZHIHU = std::string_view{"zhihu.com"};
 
 std::string get_clear_url(const std::string_view string) noexcept
@@ -24,6 +25,17 @@ std::string get_clear_url(const std::string_view string) noexcept
     }
 
     auto start = string.find(ZHIHU);
+    if (start != std::string_view::npos)
+    {
+        auto end = string.find('?', start);
+        if (end != std::string_view::npos)
+        {
+            const auto url = fast_io::concat("https://", string.substr(start, end - start));
+            return std::string{url};
+        }
+    }
+
+    start = string.find(BILIBILI);
     if (start == std::string_view::npos)
         return {};
 
