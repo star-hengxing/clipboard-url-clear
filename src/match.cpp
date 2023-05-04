@@ -8,6 +8,7 @@
 static constexpr auto B23_TV = std::string_view{"b23.tv/"};
 static constexpr auto BILIBILI = std::string_view{"bilibili.com"};
 static constexpr auto ZHIHU = std::string_view{"zhihu.com"};
+static constexpr auto TIEBA = std::string_view{"tieba.baidu.com"};
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
@@ -30,20 +31,31 @@ std::string get_clear_url(const std::string_view string) noexcept
         auto end = string.find('?', start);
         if (end != std::string_view::npos)
         {
-            const auto url = fast_io::concat("https://", string.substr(start, end - start));
+            const auto url = fast_io::concat("https://www.", string.substr(start, end - start));
             return std::string{url};
         }
     }
 
     start = string.find(BILIBILI);
-    if (start == std::string_view::npos)
-        return {};
-
-    auto end = string.find('?', start);
-    if (end != std::string_view::npos)
+    if (start != std::string_view::npos)
     {
-        const auto url = fast_io::concat("https://", string.substr(start, end - start));
-        return std::string{url};
+        auto end = string.find('?', start);
+        if (end != std::string_view::npos)
+        {
+            const auto url = fast_io::concat("https://www.", string.substr(start, end - start));
+            return std::string{url};
+        }
+    }
+
+    start = string.find(TIEBA);
+    if (start != std::string_view::npos)
+    {
+        auto end = string.find('?', start);
+        if (end != std::string_view::npos)
+        {
+            const auto url = fast_io::concat("https://", string.substr(start, end - start));
+            return std::string{url};
+        }
     }
 
     return {};

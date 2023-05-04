@@ -10,6 +10,7 @@ Now support link:
 
 - zhihu.com/xxx?yyy -> zhihu.com/xxx
 - b23.tv/xxx -> https://www.bilibili.com
+- tieba.baidu.com/xxx?yyy -> https://tieba.baidu.com/xxx
 
 # Getting started
 
