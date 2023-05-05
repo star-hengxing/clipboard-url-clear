@@ -2,7 +2,7 @@
 
 #include "clipboard.hpp"
 
-LRESULT CALLBACK ClipWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
+LRESULT CALLBACK handle_message(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
 {
     static BOOL bListening = FALSE;
 
@@ -26,16 +26,19 @@ LRESULT CALLBACK ClipWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 int main()
 {
-    WNDCLASSEX wndClass = {sizeof(WNDCLASSEX)};
-    wndClass.lpfnWndProc = ClipWndProc;
-    wndClass.lpszClassName = L"ClipWnd";
+    const auto wndClass = WNDCLASSEX
+    {
+        .cbSize = sizeof(WNDCLASSEX),
+        .lpfnWndProc = handle_message,
+        .lpszClassName = L"clipboard-url-clear",
+    };
 
     if (!RegisterClassEx(&wndClass))
     {
         return -1;
     }
 
-    HWND hWnd = CreateWindowEx(0, wndClass.lpszClassName, L"", 0, 0, 0, 0, 0, HWND_MESSAGE, nullptr, GetModuleHandle(nullptr), nullptr);
+    HWND hWnd = CreateWindowEx(0, wndClass.lpszClassName, nullptr, 0, 0, 0, 0, 0, HWND_MESSAGE, nullptr, GetModuleHandle(nullptr), nullptr);
 
     if (!hWnd)
     {

@@ -17,6 +17,10 @@ if is_mode("debug") then
     package_config.shared = true
 end
 
+if is_mode("release") then
+    set_optimize("smallest")
+end
+
 add_requireconfs("*", {configs = package_config})
 
 if is_plat("windows") then
