@@ -1,5 +1,4 @@
 #include <boost/ut.hpp>
-#include <fast_io.h>
 
 #include <clipboard.hpp>
 

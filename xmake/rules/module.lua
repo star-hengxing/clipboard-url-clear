@@ -23,15 +23,9 @@ rule("module.test")
             return
         end
 
-        target:set("optimize", "none")
-        target:set("symbols", "debug")
         target:set("policy", "build.warning", true)
         target:set("rundir", "$(projectdir)")
         target:set("group", "test")
         target:add("packages", "boost_ut")
-
-        if is_plat("windows") then
-            target:set("runtimes", "MDd")
-        end
     end)
 rule_end()
