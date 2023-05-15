@@ -1,60 +1,54 @@
 #include <string_view>
 #include <string>
 
-#include <fast_io.h>
+#include <ctre.hpp>
+#include <ada.h>
 
 #include "clipboard.hpp"
 
-static constexpr auto B23_TV = std::string_view{"b23.tv/"};
-static constexpr auto BILIBILI = std::string_view{"bilibili.com"};
-static constexpr auto ZHIHU = std::string_view{"zhihu.com"};
-static constexpr auto TIEBA = std::string_view{"tieba.baidu.com"};
+static constexpr std::string_view QUERY_PARAMETERS_DOMAIN[]
+{
+    std::string_view{"bilibili.com"},
+    std::string_view{"zhihu.com"},
+    std::string_view{"tieba.baidu.com"},
+};
+
+static constexpr auto B23_TV = std::string_view{"b23.tv"};
+// https://github.com/hanickadot/compile-time-regular-expressions/issues/178
+static constexpr auto REGEX_URL = ctll::fixed_string{R"((?<all>(http://www\.|https://www\.|http://|https://)?[a-zA-Z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(/[^\s]*)?/?\b))"};
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
-    // TODO: use regex
-    auto bilibili_start = string.find(B23_TV);
-    if (bilibili_start != std::string_view::npos)
+    // TODO: optimize regex
+    const auto [whole, a, b, c, d, e] = ctre::match<REGEX_URL>(string);
+    if (!whole)
     {
-        // short url identifier has 7 byte
-        const auto link_size = B23_TV.size() + 7;
-        if (bilibili_start + link_size > string.size())
-            return {};
-
-        const auto url = fast_io::concat("https://", string.substr(bilibili_start, link_size));
-        return b23_to_source(url);
+        return {};
     }
 
-    auto start = string.find(ZHIHU);
-    if (start != std::string_view::npos)
+    auto url = ada::parse<ada::url_aggregator>(whole.to_view());
+    // ignore invalid url
+    if (!url || url->has_empty_hostname())
     {
-        auto end = string.find('?', start);
-        if (end != std::string_view::npos)
-        {
-            const auto url = fast_io::concat("https://www.", string.substr(start, end - start));
-            return std::string{url};
-        }
+        return {};
     }
 
-    start = string.find(BILIBILI);
-    if (start != std::string_view::npos)
+    const auto hostname = url->get_hostname();
+    // get long link from short link
+    if (hostname == B23_TV)
     {
-        auto end = string.find('?', start);
-        if (end != std::string_view::npos)
-        {
-            const auto url = fast_io::concat("https://www.", string.substr(start, end - start));
-            return std::string{url};
-        }
+        return b23_to_source(url->get_href());
     }
 
-    start = string.find(TIEBA);
-    if (start != std::string_view::npos)
+    for (auto&& domain : QUERY_PARAMETERS_DOMAIN)
     {
-        auto end = string.find('?', start);
-        if (end != std::string_view::npos)
+        if (hostname.ends_with(domain))
         {
-            const auto url = fast_io::concat("https://", string.substr(start, end - start));
-            return std::string{url};
+            if (url->has_search())
+            {
+                url->set_search("");
+            }
+            return std::string{url->get_href()};
         }
     }
 

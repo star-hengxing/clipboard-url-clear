@@ -9,7 +9,7 @@ target("component")
     remove_files("main.cpp")
     add_headerfiles("*.hpp")
 
-    add_packages("clip", "ctre", "cpr", "fast_io")
+    add_packages("clip", "ctre", "cpr", "ada", "fast_io")
 
 target("clear")
     set_kind("binary")

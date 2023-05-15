@@ -5,10 +5,11 @@
 
 std::string b23_to_source(const std::string_view short_url) noexcept
 {
+    const auto redirect_count = (short_url.starts_with("https") ? 0L : 1L);
     cpr::Response response = cpr::Head
     (
         cpr::Url{short_url.data(), short_url.size()},
-        cpr::Redirect{0L}
+        cpr::Redirect{redirect_count}
     );
 
     const auto link = response.header["Location"];

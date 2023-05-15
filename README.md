@@ -8,9 +8,9 @@ Now support platform:
 
 Now support link:
 
-- zhihu.com/xxx?yyy -> zhihu.com/xxx
-- b23.tv/xxx -> https://www.bilibili.com
-- tieba.baidu.com/xxx?yyy -> https://tieba.baidu.com/xxx
+- zhihu.com/aaa?bbb -> zhihu.com/aaa
+- b23.tv/aaa -> https://www.bilibili.com/bbb
+- tieba.baidu.com/aaa?bbb -> https://tieba.baidu.com/aaa
 
 # Getting started
 
@@ -56,4 +56,5 @@ xmake run -g test
 - [clip](https://github.com/dacap/clip)
 - [ctre](https://github.com/hanickadot/compile-time-regular-expressions)
 - [cpr](https://github.com/libcpr/cpr)
+- [ada](https://github.com/ada-url/ada)
 - [fast_io](https://github.com/cppfastio/fast_io)
