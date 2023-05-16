@@ -37,6 +37,8 @@ std::string get_clear_url(const std::string_view string) noexcept
     // get long link from short link
     if (hostname == B23_TV)
     {
+        // https://b23.tv/aaa?bbb
+        url->set_search({});
         return b23_to_source(url->get_href());
     }
 
@@ -44,10 +46,7 @@ std::string get_clear_url(const std::string_view string) noexcept
     {
         if (hostname.ends_with(domain))
         {
-            if (url->has_search())
-            {
-                url->set_search("");
-            }
+            url->set_search({});
             return std::string{url->get_href()};
         }
     }
