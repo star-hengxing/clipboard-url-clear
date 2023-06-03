@@ -19,14 +19,31 @@ static constexpr auto REGEX_URL = ctll::fixed_string{R"((?<all>(http://www\.|htt
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
+    std::string_view target;
     // TODO: optimize regex
     const auto [whole, a, b, c, d, e] = ctre::match<REGEX_URL>(string);
-    if (!whole)
+    if (whole)
     {
-        return {};
+        target = whole;
+    }
+    else
+    {
+        const auto index = string.find("http");
+        if (index == std::string::npos)
+            return {};
+
+        const auto tmp = string.substr(index, string.size() - index);
+        const auto [whole, a, b, c, d, e] = ctre::match<REGEX_URL>(tmp);
+
+        if (!whole)
+        {
+            return {};
+        }
+
+        target = whole;
     }
 
-    auto url = ada::parse<ada::url_aggregator>(whole.to_view());
+    auto url = ada::parse<ada::url_aggregator>(target);
     // ignore invalid url
     if (!url || url->has_empty_hostname())
     {
