@@ -1,7 +1,8 @@
 set_project("clipboard-url-clear")
+
 set_version("0.0.1")
 
-set_xmakever("2.7.8")
+set_xmakever("2.7.9")
 
 set_warnings("all")
 set_languages("c++20")
@@ -36,6 +37,4 @@ if is_host("windows") then
     add_cxflags("/utf-8", {tools = "cl"})
 end
 
-set_policy("check.target_package_licenses", false)
-
-includes("src", "xmake", "test")
+includes("src", "src/xmake", "src/test")

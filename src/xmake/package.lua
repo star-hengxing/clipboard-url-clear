@@ -11,7 +11,7 @@ add_requires("ada")
 -- debug/concat
 add_requires("fast_io")
 
-if is_mode("release") then
+if is_plat("windows") and is_mode("release") then
     add_requires("vc-ltl5")
 end
 
