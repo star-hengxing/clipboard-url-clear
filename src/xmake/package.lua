@@ -2,8 +2,6 @@
 
 -- cross-platform clipboard api
 add_requires("clip")
--- regex match
-add_requires("ctre")
 -- https
 add_requires("cpr 1.10.3", {configs = {ssl = true}})
 -- url

@@ -1,10 +1,11 @@
 if is_plat("windows") then
     add_defines("WIN32_LEAN_AND_MEAN")
+
+    if is_mode("release") then
+        add_packages("vc-ltl5")
+    end
 end
 
-if is_mode("release") then
-    add_packages("vc-ltl5")
-end
 
 target("component")
     set_kind("$(kind)")
@@ -13,7 +14,7 @@ target("component")
     remove_files("main.cpp")
     add_headerfiles("*.hpp")
 
-    add_packages("clip", "ctre", "cpr", "ada", "fast_io")
+    add_packages("clip", "cpr", "ada", "fast_io")
 
 target("clear")
     set_kind("binary")

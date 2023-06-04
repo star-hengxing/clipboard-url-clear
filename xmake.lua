@@ -1,6 +1,6 @@
 set_project("clipboard-url-clear")
 
-set_version("0.0.1")
+set_version("0.0.2")
 
 set_xmakever("2.7.9")
 
