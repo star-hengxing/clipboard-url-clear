@@ -1,7 +1,5 @@
 # Clipboard URL Clear
 
-clear your clipboard link.
-
 Now support platform:
 
 - Windows
@@ -14,16 +12,16 @@ Now support link:
 
 # Getting started
 
-## Dependencies
+## Prerequisites
 
 - [xmake](https://xmake.io/#/guide/installation)
 - Requires C++20 compiler.
 
 ## Setup
 
-Install msvc toolchain.
+- [Visual Studio](https://visualstudio.microsoft.com)(If you just want to build without developing, download the [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools))
 
-Recommend use [scoop](https://scoop.sh/) as package manager.
+- Recommend use [scoop](https://scoop.sh) as package manager on Windows.
 
 ```sh
 scoop install xmake
@@ -51,7 +49,7 @@ xmake build -g test
 xmake run -g test
 ```
 
-# Dependent third-party libraries
+# Credits
 
 - [clip](https://github.com/dacap/clip)
 - [cpr](https://github.com/libcpr/cpr)
