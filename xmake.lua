@@ -37,4 +37,8 @@ if is_host("windows") then
     add_cxflags("/utf-8", {tools = "cl"})
 end
 
-includes("src", "src/xmake", "src/test")
+includes("src", "src/xmake")
+
+if has_config("test") then
+    includes("src/test")
+end
