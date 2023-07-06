@@ -44,7 +44,7 @@ rule("module.test")
         end
 
         target:set("policy", "build.warning", true)
-        target:set("rundir", "$(projectdir)")
+        target:set("rundir", os.projectdir())
         target:set("group", "test")
         target:add("packages", "boost_ut")
     end)

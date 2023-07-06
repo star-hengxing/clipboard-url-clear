@@ -11,7 +11,7 @@ set_allowedplats("windows")
 
 add_rules("mode.debug", "mode.release")
 
-local package_config = {header_only = false}
+local package_config = {}
 
 if is_mode("debug") then
     set_policy("build.warning", true)
@@ -37,8 +37,4 @@ if is_host("windows") then
     add_cxflags("/utf-8", {tools = "cl"})
 end
 
-includes("src", "src/xmake")
-
-if has_config("test") then
-    includes("src/test")
-end
+includes("src", "xmake", "test")
