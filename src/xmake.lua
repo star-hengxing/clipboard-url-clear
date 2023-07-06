@@ -20,3 +20,13 @@ target("clear")
     end
 
     add_deps("component")
+
+    after_build(function (target)
+        import("lib.detect.find_tool")
+
+        local upx = assert(find_tool("upx"), "upx not found!")
+        local exe = path.join("build", path.filename(target:targetfile()))
+
+        os.tryrm(exe)
+        os.execv(upx.program, {target:targetfile(), "-o", exe})
+    end)
