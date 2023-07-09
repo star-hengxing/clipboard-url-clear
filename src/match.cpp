@@ -29,6 +29,20 @@ static bool is_alpha(char c) noexcept
     return is_letter(c) || is_number(c);
 }
 
+bool valid_url_char(char target) noexcept
+{
+    constexpr std::string_view chars = "./_#-%~[]";
+
+    for (auto c : chars)
+    {
+        if (target != c)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 static std::string_view find_url(const std::string_view string) noexcept
 {
     const auto start = string.find("http");
@@ -65,10 +79,7 @@ static std::string_view find_url(const std::string_view string) noexcept
             search = true;
         }
 
-        if (!is_alpha(c)
-            && c != '.'
-            && c != '/'
-            && c != '%')
+        if (!is_alpha(c) && !valid_url_char(c))
         {
             break;
         }

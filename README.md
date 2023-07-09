@@ -6,7 +6,7 @@ Now support platform:
 
 Now support link:
 
-- https://www.zhihu.com/aaa?bbb -> zhihu.com/aaa
+- https://www.zhihu.com/aaa?bbb -> https://www.zhihu.com/aaa
 - https://b23.tv/aaa -> https://www.bilibili.com/bbb
 - https://tieba.baidu.com/aaa?bbb -> https://tieba.baidu.com/aaa
 
