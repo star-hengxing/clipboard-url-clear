@@ -48,3 +48,7 @@ rule("module.test")
         target:set("group", "test")
         target:add("packages", "boost_ut")
     end)
+
+    after_build(function (target)
+        os.exec("xmake run -g test")
+    end)

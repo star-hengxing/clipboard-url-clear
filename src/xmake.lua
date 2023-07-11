@@ -24,6 +24,10 @@ target("clear")
     after_build(function (target)
         import("lib.detect.find_tool")
 
+        if not is_mode("release") then
+            return
+        end
+
         local upx = assert(find_tool("upx"), "upx not found!")
         local exe = path.join("build", path.filename(target:targetfile()))
 
