@@ -31,16 +31,16 @@ static bool is_alpha(char c) noexcept
 
 bool valid_url_char(char target) noexcept
 {
-    constexpr std::string_view chars = "./_#-%~[]";
+    constexpr std::string_view chars = "./_&=#?-%~[]";
 
     for (auto c : chars)
     {
-        if (target != c)
+        if (target == c)
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 static std::string_view find_url(const std::string_view string) noexcept
@@ -67,22 +67,11 @@ static std::string_view find_url(const std::string_view string) noexcept
     auto url_size = 4 + offset;
     const auto total_size = string.size();
 
-    auto search = false;
     for (auto i = start + url_size; i < total_size; i += 1)
     {
         const auto c = string[i];
-        if (c == '?')
-        {
-            if (search)
-                break;
-
-            search = true;
-        }
-
         if (!is_alpha(c) && !valid_url_char(c))
-        {
             break;
-        }
 
         url_size += 1;
     }
@@ -92,7 +81,7 @@ static std::string_view find_url(const std::string_view string) noexcept
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
-    auto target = find_url(string);
+    const auto target = find_url(string);
     if (target.empty())
         return {};
 
