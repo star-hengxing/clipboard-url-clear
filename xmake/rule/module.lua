@@ -19,6 +19,19 @@ rule("module.program")
         end
     end)
 
+    after_build(function (target)
+        local enabled = target:extraconf("rules", "module.program", "upx")
+        if not enabled then
+            return
+        end
+
+        local upx = assert(import("lib.detect.find_tool")("upx"), "upx not found!")
+        local file = path.join("build", path.filename(target:targetfile()))
+
+        os.tryrm(file)
+        os.execv(upx.program, {target:targetfile(), "-o", file})
+    end)
+
 rule("module.component")
     on_load(function (target)
         if is_mode("debug") then

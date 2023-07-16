@@ -25,16 +25,10 @@ end
 add_requireconfs("*", {configs = package_config})
 
 if is_plat("windows") then
-    if is_mode("debug") then
-        set_runtimes("MDd")
-    else
-        set_runtimes("MT")
-    end
-end
--- support utf-8 on msvc
-if is_host("windows") then
+    set_runtimes(is_mode("debug") and "MDd" or "MT")
+    -- support utf-8 on msvc
     add_defines("UNICODE", "_UNICODE")
-    add_cxflags("/utf-8", {tools = "cl"})
+    add_cxflags("/utf-8", "/permissive-", {tools = "cl"})
 end
 
 includes("src", "xmake", "test")
