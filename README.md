@@ -4,13 +4,30 @@ Now support platform:
 
 - Windows
 
-Now support link:
+# Feature
 
-- https://www.zhihu.com/aaa?bbb -> https://www.zhihu.com/aaa
-- https://b23.tv/aaa -> https://www.bilibili.com/bbb
-- https://tieba.baidu.com/aaa?bbb -> https://tieba.baidu.com/aaa
+- Anti tracker.
+
+```
+https://www.zhihu.com/aaa?bbb -> https://www.zhihu.com/aaa
+https://tieba.baidu.com/aaa?bbb -> https://tieba.baidu.com/aaa
+```
+
+We can customize domain in the `clear_domains.txt` file.
+
+> `clear_domains.txt` must be in the same directory as the program.
+
+- Convert bilibili short url.
+
+```
+https://b23.tv/aaa -> https://www.bilibili.com/bbb
+```
 
 # Getting started
+
+Download the program from the release page and run it directly in the command line.
+
+# Build
 
 ## Prerequisites
 
@@ -27,26 +44,17 @@ Now support link:
 scoop install xmake
 ```
 
-## Build
-
-Clone repo, then try
+Clone repo, then build and run.
 
 ```sh
 xmake -y
-```
-
-After build, try
-
-```sh
 xmake run
 ```
 
 ## Test
 
 ```sh
-xmake f -m debug --test=y
-xmake build -g test
-xmake run -g test
+xmake test
 ```
 
 # Credits

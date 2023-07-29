@@ -5,12 +5,7 @@
 
 #include "clipboard.hpp"
 
-static constexpr std::string_view QUERY_PARAMETERS_DOMAIN[]
-{
-    std::string_view{"bilibili.com"},
-    std::string_view{"zhihu.com"},
-    std::string_view{"tieba.baidu.com"},
-};
+static const auto QUERY_PARAMETERS_DOMAIN = ::read_urls("clear_domains.txt");
 
 static constexpr auto B23_TV = std::string_view{"b23.tv"};
 
@@ -101,7 +96,7 @@ std::string get_clear_url(const std::string_view string) noexcept
         return b23_to_source(url->get_href());
     }
 
-    for (auto&& domain : QUERY_PARAMETERS_DOMAIN)
+    for (const auto& domain : QUERY_PARAMETERS_DOMAIN)
     {
         if (hostname.ends_with(domain))
         {

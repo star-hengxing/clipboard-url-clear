@@ -6,7 +6,6 @@ vsxmake*/
 
 # build
 build/
-precompile.hpp
 
 # resource
-assets/
+clear_domains.txt
