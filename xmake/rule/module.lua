@@ -21,7 +21,7 @@ rule("module.program")
 
     after_build(function (target)
         local enabled = target:extraconf("rules", "module.program", "upx")
-        if not enabled then
+        if (not enabled) or (not is_mode("release")) then
             return
         end
 
@@ -60,8 +60,4 @@ rule("module.test")
         target:set("rundir", os.projectdir())
         target:set("group", "test")
         target:add("packages", "boost_ut")
-    end)
-
-    after_build(function (target)
-        os.exec("xmake run -g test")
     end)
