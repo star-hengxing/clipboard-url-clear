@@ -2,7 +2,7 @@ set_project("clipboard-url-clear")
 
 set_version("0.0.2")
 
-set_xmakever("2.7.9")
+set_xmakever("2.8.1")
 
 set_warnings("all")
 set_languages("c++20")

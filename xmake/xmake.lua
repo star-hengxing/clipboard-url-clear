@@ -6,3 +6,5 @@ includes("option.lua")
 includes("task.lua")
 -- project module config
 includes("rule/module.lua")
+-- project debug tool
+includes("rule/debug.lua")
