@@ -6,6 +6,3 @@ vsxmake*/
 
 # build
 build/
-
-# resource
-clear_domains.txt

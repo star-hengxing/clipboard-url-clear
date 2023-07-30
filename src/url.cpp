@@ -10,9 +10,9 @@ std::vector<std::string> read_urls(const std::string_view filename) noexcept
 {
     static constexpr std::string_view https = "https://";
 
-    std::vector<std::string> urls;
     try
     {
+        std::vector<std::string> urls;
         auto file = fast_io::ibuf_file{filename};
         for (auto&& buffer : line_scanner(file))
         {
@@ -28,10 +28,16 @@ std::vector<std::string> read_urls(const std::string_view filename) noexcept
                 urls.push_back(std::string{line});
             }
         }
+
+        if (urls.empty())
+        {
+            perrln("clear_domains.txt is empty, not url must be anti-tracker");
+        }
+        return urls;
     }
     catch (fast_io::error& e)
     {
-        perrln(e);
+        perrln("clear_domains.txt not found\n", e);
+        return {};
     }
-    return urls;
 }
