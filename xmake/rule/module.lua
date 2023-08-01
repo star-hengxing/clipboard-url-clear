@@ -13,11 +13,16 @@ rule("module.program")
             return
         end
 
-        local upx = assert(import("lib.detect.find_tool")("upx"), "upx not found!")
-        local file = path.join("build", path.filename(target:targetfile()))
+        import("core.project.depend")
 
-        os.tryrm(file)
-        os.execv(upx.program, {target:targetfile(), "-o", file})
+        local targetfile = target:targetfile()
+        depend.on_changed(function ()
+            local file = path.join("build", path.filename(targetfile))
+            local upx = assert(import("lib.detect.find_tool")("upx"), "upx not found!")
+
+            os.tryrm(file)
+            os.execv(upx.program, {targetfile, "-o", file})
+        end, {files = targetfile})
     end)
 
 rule("module.component")
