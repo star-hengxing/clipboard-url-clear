@@ -4,25 +4,18 @@ set_version("0.0.2")
 
 set_xmakever("2.8.1")
 
-set_warnings("all")
-set_languages("c++20")
-
 set_allowedplats("windows")
 
-add_rules("mode.debug", "mode.release")
+set_languages("c++20")
 
-local package_config = {}
+set_warnings("all")
+add_rules("mode.debug", "mode.release")
 
 if is_mode("debug") then
     set_policy("build.warning", true)
-    package_config.shared = true
-end
-
-if is_mode("release") then
+elseif is_mode("release") then
     set_optimize("smallest")
 end
-
-add_requireconfs("*", {configs = package_config})
 
 if is_plat("windows") then
     set_runtimes(is_mode("debug") and "MDd" or "MT")

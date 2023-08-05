@@ -1,5 +1,9 @@
 -- dev
 
+if is_mode("debug") then
+    add_requireconfs("*", {configs = {shared = true}})
+end
+
 -- cross-platform clipboard api
 add_requires("clip 1.5")
 -- https
