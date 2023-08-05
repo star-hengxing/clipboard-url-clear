@@ -4,6 +4,9 @@
 #include <fast_io.h>
 #include <cpr/cpr.h>
 
+// ms
+inline constexpr auto TIME_OUT = 1000;
+
 std::string b23_to_source(const std::string_view short_url) noexcept
 {
     std::string tmp;
@@ -21,7 +24,8 @@ std::string b23_to_source(const std::string_view short_url) noexcept
     cpr::Response response = cpr::Head
     (
         cpr::Url{url.data(), url.size()},
-        cpr::Redirect{0L}
+        cpr::Redirect{0L},
+        cpr::Timeout(TIME_OUT)
     );
 
     const auto link = response.header["Location"];
@@ -30,7 +34,7 @@ std::string b23_to_source(const std::string_view short_url) noexcept
 
     const auto index = link.find('?');
     if (index == std::string::npos)
-        return {};
-
-    return link.substr(0, index);
+        return link;
+    else
+        return link.substr(0, index);
 }
