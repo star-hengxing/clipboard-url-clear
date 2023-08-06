@@ -9,13 +9,23 @@ Now support platform:
 - Anti tracker.
 
 ```
-https://www.zhihu.com/aaa?bbb -> https://www.zhihu.com/aaa
-https://tieba.baidu.com/aaa?bbb -> https://tieba.baidu.com/aaa
+bad:  https://www.zhihu.com/aaa?bbb
+good: https://www.zhihu.com/aaa
+
+bad:  https://tieba.baidu.com/aaa?bbb
+good: https://tieba.baidu.com/aaa
 ```
 
-We can customize domain in the `clear_domains.txt` file.
+We can customize domain in the `clear_domains.csv` file.
 
-> `clear_domains.txt` must be in the same directory as the program.
+format:
+
+```
+domain0,key1,key2
+domain1,key1,key2
+```
+
+> `clear_domains.csv` must be in the same directory as the program.
 
 - Convert bilibili short url.
 
