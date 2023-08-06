@@ -9,5 +9,13 @@ void clipboard_handle() noexcept;
 std::string b23_to_source(const std::string_view short_url) noexcept;
 // only support single link
 std::string get_clear_url(const std::string_view string) noexcept;
-// read urls form file
-std::vector<std::string> read_urls(const std::string_view filename) noexcept;
+
+struct Table
+{
+public:
+    const std::vector<std::string_view> domains;
+    const std::vector<std::vector<std::string_view>> url_keys;
+
+public:
+    static Table read(std::string_view string) noexcept;
+};

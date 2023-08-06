@@ -2,10 +2,13 @@
 #include <string>
 
 #include <ada.h>
+#include <fast_io.h>
 
+#include "base/range.hpp"
 #include "clipboard.hpp"
 
-static const auto QUERY_PARAMETERS_DOMAIN = ::read_urls("clear_domains.txt");
+inline auto const database_string = fast_io::native_file_loader{"clear_domains.csv"};
+inline auto const database = Table::read({database_string.data(), database_string.size()});
 
 static constexpr auto B23_TV = std::string_view{"b23.tv"};
 
@@ -40,7 +43,7 @@ bool valid_url_char(char target) noexcept
 
 static std::string_view find_url(const std::string_view string) noexcept
 {
-    const auto start = string.find("http");
+    auto const start = string.find("http");
     if (start == std::string::npos)
         return {};
 
@@ -60,11 +63,11 @@ static std::string_view find_url(const std::string_view string) noexcept
     }
 
     auto url_size = 4 + offset;
-    const auto total_size = string.size();
+    auto const total_size = string.size();
 
     for (auto i = start + url_size; i < total_size; i += 1)
     {
-        const auto c = string[i];
+        auto const c = string[i];
         if (!is_alpha(c) && !valid_url_char(c))
             break;
 
@@ -76,7 +79,7 @@ static std::string_view find_url(const std::string_view string) noexcept
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
-    const auto target = find_url(string);
+    auto const target = find_url(string);
     if (target.empty())
         return {};
 
@@ -87,7 +90,7 @@ std::string get_clear_url(const std::string_view string) noexcept
         return {};
     }
 
-    const auto hostname = url->get_hostname();
+    auto const hostname = url->get_hostname();
     // get long link from short link
     if (hostname == B23_TV)
     {
@@ -96,11 +99,42 @@ std::string get_clear_url(const std::string_view string) noexcept
         return b23_to_source(url->get_href());
     }
 
-    for (const auto& domain : QUERY_PARAMETERS_DOMAIN)
+    for (auto i : range(database.domains.size()))
     {
+        auto const domain = database.domains[i];
         if (hostname.ends_with(domain))
         {
-            url->set_search({});
+            if (!url->has_search())
+            {
+                return std::string{url->get_href()};
+            }
+            // need reserve?
+            std::string search;
+            auto params = ada::url_search_params{url->get_search()};
+            if (params.size() != 0)
+            {
+                for (auto key : database.url_keys[i])
+                {
+                    auto const value = params.get(key);
+                    if (value)
+                    {
+                        search = fast_io::concat(search, key, "=", value.value(), "&");
+                    }
+                }
+            }
+
+            if (search.empty())
+            {
+                // remove
+                url->set_search({});
+            }
+            else
+            {
+                // remove last '&'
+                search.pop_back();
+                url->set_search(search);
+            }
+
             return std::string{url->get_href()};
         }
     }

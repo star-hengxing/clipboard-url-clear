@@ -28,13 +28,14 @@ std::string b23_to_source(const std::string_view short_url) noexcept
         cpr::Timeout(TIME_OUT)
     );
 
-    const auto link = response.header["Location"];
+    auto const link = response.header["Location"];
     if (link.empty())
         return {};
 
-    const auto index = link.find('?');
+    auto const index = link.find('?');
     if (index == std::string::npos)
         return link;
-    else
-        return link.substr(0, index);
+
+    // TODO: maybe have p=<number>
+    return link.substr(0, index);
 }

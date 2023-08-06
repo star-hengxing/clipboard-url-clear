@@ -26,7 +26,7 @@ LRESULT CALLBACK handle_message(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 int main()
 {
-    const auto wndClass = WNDCLASSEX
+    auto const wndClass = WNDCLASSEX
     {
         .cbSize = sizeof(WNDCLASSEX),
         .lpfnWndProc = handle_message,

@@ -1,43 +1,97 @@
-#include <vector>
 #include <string>
-#include <string_view>
 
-#include <ada.h>
 #include <fast_io.h>
-#include <fast_io_device.h>
 
-std::vector<std::string> read_urls(const std::string_view filename) noexcept
+#include "clipboard.hpp"
+
+Table Table::read(std::string_view string) noexcept
 {
-    static constexpr std::string_view https = "https://";
-
-    try
-    {
-        std::vector<std::string> urls;
-        auto file = fast_io::ibuf_file{filename};
-        for (auto&& buffer : line_scanner(file))
-        {
-            auto end = buffer.end();
-            // fast_io only parse utf8 + LF
-            if (*(end - 1) == '\r')
-                end -= 1;
-
-            const auto line = std::string_view{buffer.begin(), end};
-            const auto url = fast_io::concat(https, line);
-            if (ada::parse<ada::url_aggregator>(url).has_value())
-            {
-                urls.push_back(std::string{line});
-            }
-        }
-
-        if (urls.empty())
-        {
-            perrln("clear_domains.txt is empty, not url must be anti-tracker");
-        }
-        return urls;
-    }
-    catch (fast_io::error& e)
-    {
-        perrln("clear_domains.txt not found\n", e);
+    if (string.empty())
         return {};
+
+    std::vector<std::string_view> domains;
+    std::vector<std::vector<std::string_view>> url_keys;
+
+    auto start = string.data();
+    auto const end = start + string.size();
+
+    auto pos = start;
+    auto has_domain = false;
+    std::vector<std::string_view> tmp;
+    while (pos < end)
+    {
+        auto const c = *pos;
+        auto const size = static_cast<size_t>(pos - start);
+        auto const str = std::string_view{start, size};
+        if (c == ',')
+        {
+            if (has_domain)
+            {
+                tmp.push_back(str);
+            }
+            else
+            {
+                // domain is right? use ada parse?
+                if (str.find('.') != std::string_view::npos)
+                {
+                    has_domain = true;
+                    domains.push_back(str);
+                }
+                else
+                {
+                    perrln(fast_io::concat("Invalid domain: ", str));
+                    // TODO: skip error row
+                    std::exit(-1);
+                }
+            }
+
+            start = pos + 1;
+            pos = start;
+        }
+        else if (c == '\r' || c == '\n')
+        {
+            // domain has key?
+            if (!str.empty())
+            {
+                if (has_domain)
+                {
+                    tmp.push_back(str);
+                    // reset
+                    has_domain = false;
+                }
+                else
+                {
+                    domains.push_back(str);
+                }
+            }
+            url_keys.push_back(std::move(tmp));
+            // CRLF or LF
+            auto const skip_count = (*(pos + 1) == '\n') ? 2 : 1;
+            start = pos + skip_count;
+            pos = start;
+        }
+        else [[likely]]
+        {
+            pos += 1;
+        }
     }
+
+    // if current row end without CRLF
+    if (start != pos)
+    {
+        auto const size = static_cast<size_t>(pos - start);
+        auto const str = std::string_view{start, size};
+        if (has_domain)
+        {
+            tmp.push_back(str);
+        }
+        else
+        {
+            domains.push_back(str);
+        }
+
+        url_keys.push_back(std::move(tmp));
+    }
+
+    return {domains, url_keys};
 }
