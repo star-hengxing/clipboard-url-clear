@@ -5,9 +5,10 @@ end
 target("component")
     set_kind("$(kind)")
     add_rules("module.component")
-    add_files("*.cpp")
-    remove_files("main.cpp")
+    add_files("*.cpp|main.cpp")
     add_headerfiles("*.hpp")
+
+    add_cxxflags("cl::-wd4003")
 
     add_packages("clip", "cpr", "ada", "fast_io")
 

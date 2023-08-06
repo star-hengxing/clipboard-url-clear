@@ -4,25 +4,28 @@
 #include <ada.h>
 #include <fast_io.h>
 
+#include "base/macro.hpp"
 #include "base/range.hpp"
 #include "clipboard.hpp"
 
 inline auto const database_string = fast_io::native_file_loader{"clear_domains.csv"};
 inline auto const database = Table::read({database_string.data(), database_string.size()});
 
-static constexpr auto B23_TV = std::string_view{"b23.tv"};
+NAMESPACE_BEGIN()
 
-static bool is_letter(char c) noexcept
+constexpr auto B23_TV = std::string_view{"b23.tv"};
+
+bool is_letter(char c) noexcept
 {
     return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 }
 
-static bool is_number(char c) noexcept
+bool is_number(char c) noexcept
 {
     return c >= '0' && c <= '9';
 }
 
-static bool is_alpha(char c) noexcept
+bool is_alpha(char c) noexcept
 {
     return is_letter(c) || is_number(c);
 }
@@ -41,7 +44,7 @@ bool valid_url_char(char target) noexcept
     return false;
 }
 
-static std::string_view find_url(const std::string_view string) noexcept
+std::string_view find_url(const std::string_view string) noexcept
 {
     auto const start = string.find("http");
     if (start == std::string::npos)
@@ -76,6 +79,8 @@ static std::string_view find_url(const std::string_view string) noexcept
 
     return string.substr(start, url_size);
 }
+
+NAMESPACE_END()
 
 std::string get_clear_url(const std::string_view string) noexcept
 {
