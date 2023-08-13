@@ -8,7 +8,7 @@
 #include "base/range.hpp"
 #include "clipboard.hpp"
 
-inline auto const database_string = fast_io::native_file_loader{"clear_domains.csv"};
+inline auto const database_string = fast_io::allocation_file_loader{"clear_domains.csv"};
 inline auto const database = Table::read({database_string.data(), database_string.size()});
 
 NAMESPACE_BEGIN()
