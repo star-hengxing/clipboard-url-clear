@@ -18,6 +18,7 @@ if is_plat("windows") and is_mode("release") then
 end
 
 -- test
+
 if has_config("test") then
     add_requires("boost_ut v1.1.9")
 end

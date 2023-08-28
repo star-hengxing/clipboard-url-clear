@@ -5,6 +5,7 @@ set_version("0.0.2")
 set_xmakever("2.8.1")
 
 set_allowedplats("windows")
+set_allowedmodes("debug", "release")
 
 set_languages("c++20")
 

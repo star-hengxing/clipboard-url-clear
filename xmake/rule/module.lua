@@ -14,11 +14,12 @@ rule("module.program")
         end
 
         import("core.project.depend")
+        import("lib.detect.find_tool")
 
         local targetfile = target:targetfile()
         depend.on_changed(function ()
             local file = path.join("build", path.filename(targetfile))
-            local upx = assert(import("lib.detect.find_tool")("upx"), "upx not found!")
+            local upx = assert(find_tool("upx"), "upx not found!")
 
             os.tryrm(file)
             os.vrunv(upx.program, {targetfile, "-o", file})
@@ -37,8 +38,6 @@ rule("module.component")
             end
         elseif is_mode("release") then
             target:set("kind", "static")
-        else
-            raise("Unknown build kind")
         end
     end)
 
