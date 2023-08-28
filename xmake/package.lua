@@ -13,6 +13,8 @@ add_requires("ada e22331885ce864d27ea78ff9b2d5ce917ef09a69")
 -- debug/concat
 add_requires("fast_io 2023.1.28")
 
+add_requires("cppitertools")
+
 if is_plat("windows") and is_mode("release") then
     add_requires("vc-ltl5 5.0.7")
 end

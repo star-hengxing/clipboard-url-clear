@@ -3,9 +3,9 @@
 
 #include <ada.h>
 #include <fast_io.h>
+#include <cppitertools/range.hpp>
 
 #include "base/macro.hpp"
-#include "base/range.hpp"
 #include "clipboard.hpp"
 
 inline auto const database_string = fast_io::allocation_file_loader{"clear_domains.csv"};
@@ -104,7 +104,7 @@ std::string get_clear_url(const std::string_view string) noexcept
         return b23_to_source(url->get_href());
     }
 
-    for (auto i : range(database.domains.size()))
+    for (auto i : iter::range(database.domains.size()))
     {
         auto const domain = database.domains[i];
         if (hostname.ends_with(domain))

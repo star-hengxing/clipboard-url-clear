@@ -10,7 +10,7 @@ target("component")
 
     add_cxxflags("cl::-wd4003")
 
-    add_packages("clip", "cpr", "ada", "fast_io")
+    add_packages("clip", "cpr", "ada", "fast_io", "cppitertools")
 
 target("clear")
     add_rules("module.program", {upx = true})

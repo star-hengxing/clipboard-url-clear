@@ -25,6 +25,14 @@ domain0,key1,key2
 domain1,key1,key2
 ```
 
+key usage:
+
+```
+https://www.domain0.com/aaa?key4=value4&key2=value2
+
+https://www.domain0.com/aaa?key2=value2
+```
+
 > `clear_domains.csv` must be in the same directory as the program.
 
 - Convert bilibili short url.
@@ -46,7 +54,7 @@ Download the program from the release page and run it directly in the command li
 
 ## Setup
 
-- [Visual Studio](https://visualstudio.microsoft.com)(If you just want to build without developing, download the [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools))
+- [Visual Studio](https://visualstudio.microsoft.com) (If you just want to build without developing, download the [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools))
 
 - Recommend use [scoop](https://scoop.sh) as package manager on Windows.
 
@@ -74,3 +82,4 @@ xmake test
 - [ada](https://github.com/ada-url/ada)
 - [fast_io](https://github.com/cppfastio/fast_io)
 - [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
+- [cppitertools](https://github.com/ryanhaining/cppitertools)
