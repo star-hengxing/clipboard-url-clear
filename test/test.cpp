@@ -69,10 +69,28 @@ void database_test() noexcept
     };
 }
 
+void http_test() noexcept
+{
+    constexpr std::string_view response = "HTTP/1.1 302 Found\r\nContent-Type: text/html;\r\ncharset=utf-8\r\nConnection: keep-alive\r\nBili-Trace-Id: 123456789\r\nLocation: https://www.bilibili.com/video/abcdefg?key1=value1&p=1&key3=value3";
+
+    "get location"_test = [&] {
+        // no
+        expect(get_location("").empty());
+        expect(get_location("HTTP/1.1 302 Found\r\n").empty());
+        expect(get_location("Location: ").empty());
+        expect(get_location("Location: https://www.").empty());
+        expect(get_location("https://www.bilibili.com/video/abcdefg").empty());
+        // yes
+        expect(get_location(response) == "https://www.bilibili.com/video/abcdefg?p=1");
+        expect(get_location("Location: https://www.bilibili.com/video/abcdefg") == "https://www.bilibili.com/video/abcdefg");
+    };
+}
+
 NAMESPACE_END()
 
 int main()
 {
     url_test();
     database_test();
+    http_test();
 }

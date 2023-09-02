@@ -3,9 +3,38 @@
 
 #include <fast_io.h>
 #include <cpr/cpr.h>
+#include <cppitertools/enumerate.hpp>
+
+#include "clipboard.hpp"
 
 // ms
 inline constexpr auto TIME_OUT = 1000;
+
+std::string get_location(const std::string_view response) noexcept
+{
+    constexpr std::string_view LOCATION{"Location: "};
+
+    if (response.size() < LOCATION.size())
+        return {};
+
+    auto const index = response.find(LOCATION);
+    if (index == std::string_view::npos)
+        return {};
+
+    auto const tmp = response.substr(index + LOCATION.size());
+    for (auto const [i, v] : iter::enumerate(tmp))
+    {
+        if (v == '\r')
+        {
+            if (i + 1 < tmp.size() && tmp[i + 1] == '\n')
+                return get_clear_url(tmp.substr(0, i));
+            else
+                return {};
+        }
+    }
+    // missing "\r\n"? try
+    return get_clear_url(tmp);
+}
 
 std::string b23_to_source(const std::string_view short_url) noexcept
 {
@@ -32,10 +61,5 @@ std::string b23_to_source(const std::string_view short_url) noexcept
     if (link.empty())
         return {};
 
-    auto const index = link.find('?');
-    if (index == std::string::npos)
-        return link;
-
-    // TODO: maybe have p=<number>
-    return link.substr(0, index);
+    return get_clear_url(link);
 }
