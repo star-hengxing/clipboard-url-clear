@@ -22,7 +22,12 @@ rule("module.program")
             local upx = assert(find_tool("upx"), "upx not found!")
 
             os.tryrm(file)
-            os.vrunv(upx.program, {targetfile, "-o", file})
+
+            local argv = table.wrap(target:values("upx.flags"))
+            table.insert(argv, targetfile)
+            table.insert(argv, "-o")
+            table.insert(argv, file)
+            os.vrunv(upx.program, argv)
         end, {files = targetfile})
     end)
 

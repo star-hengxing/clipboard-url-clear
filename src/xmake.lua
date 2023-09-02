@@ -14,6 +14,8 @@ target("component")
 
 target("clear")
     add_rules("module.program", {upx = true})
+    set_values("upx.flags", "--best")
+
     add_files("main.cpp")
 
     if is_plat("windows") then
