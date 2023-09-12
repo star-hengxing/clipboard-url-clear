@@ -4,6 +4,9 @@ rule("debug.asan")
             return
         end
 
+        import("lib.detect.find_tool")
+        import("core.base.semver")
+
         target:add("cxflags", "-fsanitize=address")
         target:add("mxflags", "-fsanitize=address")
         target:add("ldflags", "-fsanitize=address")
@@ -13,11 +16,15 @@ rule("debug.asan")
             target:set("symbols", "debug")
         end
 
-        local msvc = target:toolchain("msvc")
-        if target:kind() == "binary" and msvc then
-            import("lib.detect.find_tool")
-
-            local cl = assert(find_tool("cl", {envs = msvc:runenvs()}), "cl not found!")
-            target:add("runenvs", "Path", path.directory(cl.program))
+        if target:is_plat("windows") and target:is_binary() then
+            local msvc = target:toolchain("msvc")
+            if msvc then
+                local envs = msvc:runenvs()
+                local vscmd_ver = envs and envs.VSCMD_VER
+                if vscmd_ver and semver.match(vscmd_ver):ge("17.7") then
+                    local cl = assert(find_tool("cl", {envs = envs}), "cl not found!")
+                    target:add("runenvs", "Path", path.directory(cl.program))
+                end
+            end
         end
     end)
