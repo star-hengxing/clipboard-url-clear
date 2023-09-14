@@ -9,7 +9,7 @@ add_requires("clip 1.5")
 -- https
 add_requires("cpr 1.10.3", {configs = {ssl = true}})
 -- url
-add_requires("ada e22331885ce864d27ea78ff9b2d5ce917ef09a69")
+add_requires("ada v2.6.7")
 -- debug/concat
 add_requires("fast_io 2023.1.28")
 
