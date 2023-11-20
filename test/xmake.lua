@@ -1,6 +1,9 @@
+set_kind("binary")
+set_default(false)
+set_rundir("$(projectdir)")
+add_packages("boost_ut")
+
 target("test")
-    set_kind("binary")
-    set_default(false)
     add_tests("default")
     
     add_files("test.cpp")
@@ -9,4 +12,3 @@ target("test")
     add_cxxflags("cl::-wd4003")
 
     add_deps("component")
-    add_packages("fast_io", "boost_ut")
