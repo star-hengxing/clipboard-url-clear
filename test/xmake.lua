@@ -1,9 +1,7 @@
-set_kind("binary")
-set_default(false)
-set_rundir("$(projectdir)")
-add_packages("boost_ut")
+add_rules("module.test")
 
 target("test")
+    set_kind("binary")
     add_tests("default")
     
     add_files("test.cpp")

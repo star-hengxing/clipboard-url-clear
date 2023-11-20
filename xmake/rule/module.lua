@@ -48,11 +48,7 @@ rule("module.component")
 
 rule("module.test")
     on_load(function (target)
-        if not has_config("test") then
-            target:set("enabled", false)
-            return
-        end
-
+        target:set("default", false)
         target:set("policy", "build.warning", true)
         target:set("rundir", os.projectdir())
         target:set("group", "test")
