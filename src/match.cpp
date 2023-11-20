@@ -3,7 +3,7 @@
 
 #include <ada.h>
 #include <fast_io.h>
-#include <cppitertools/range.hpp>
+#include <cppitertools/enumerate.hpp>
 
 #include "base/macro.hpp"
 #include "clipboard.hpp"
@@ -104,9 +104,8 @@ std::string get_clear_url(const std::string_view string) noexcept
         return b23_to_source(url->get_href());
     }
 
-    for (auto i : iter::range(database.domains.size()))
+    for (auto [i, domain] : iter::enumerate(database.domains))
     {
-        auto const domain = database.domains[i];
         if (hostname.ends_with(domain))
         {
             if (!url->has_search())

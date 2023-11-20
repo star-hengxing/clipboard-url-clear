@@ -39,7 +39,7 @@ Table Table::read(std::string_view string) noexcept
                 }
                 else
                 {
-                    perrln(fast_io::concat("Invalid domain: ", str));
+                    fast_io::io::perrln(fast_io::concat("Invalid domain: ", str));
                     // TODO: skip error row
                     std::exit(-1);
                 }

@@ -2,7 +2,7 @@ set_project("clipboard-url-clear")
 
 set_version("0.0.3")
 
-set_xmakever("2.8.1")
+set_xmakever("2.8.5")
 
 set_allowedplats("windows")
 set_allowedmodes("debug", "release")
@@ -20,9 +20,10 @@ end
 
 if is_plat("windows") then
     set_runtimes(is_mode("debug") and "MDd" or "MT")
-    -- support utf-8 on msvc
     add_defines("UNICODE", "_UNICODE")
-    add_cxflags("/utf-8", "/permissive-", {tools = "cl"})
+    add_cxflags("/permissive-", {tools = "cl"})
 end
+
+set_encodings("utf-8")
 
 includes("src", "xmake", "test")
