@@ -13,7 +13,7 @@ target("component")
     add_packages("clip", "cpr", "ada", "fast_io", "cppitertools")
 
 target("clear")
-    add_rules("module.program", {upx = true})
+    add_rules("module.program")
     set_values("upx.flags", "--best")
 
     add_files("main.cpp")

@@ -27,8 +27,48 @@ package("fast_io")
     end)
 package_end()
 
+package("clip")
+    set_homepage("https://github.com/dacap/clip")
+    set_description("Library to copy/retrieve content to/from the clipboard/pasteboard.")
+    set_license("MIT")
+
+    add_urls("https://github.com/dacap/clip/archive/refs/tags/$(version).tar.gz",
+             "https://github.com/dacap/clip.git")
+
+    add_versions("v1.7", "f494d306f3425e984368cbd94ffb213e0a3b3d44c3ab169e5134788d3342535c")
+
+    if is_plat("windows") then
+        add_syslinks("shlwapi", "ole32", "user32")
+    end
+
+    on_install("windows", function(package)
+        io.writefile("xmake.lua", [[
+            add_rules("mode.debug", "mode.release")
+            set_languages("c++11")
+            target("clip")
+                set_kind("$(kind)")
+                add_files("clip.cpp", "image.cpp")
+                add_files("clip_win.cpp")
+                add_headerfiles("*.h", {prefixdir = "clip"})
+                if is_plat("windows") and is_kind("shared") then
+                    add_rules("utils.symbols.export_all", {export_classes = true})
+                end
+        ]])
+        import("package.tools.xmake").install(package)
+    end)
+
+    on_test(function(package)
+        assert(package:check_cxxsnippets({ test = [[
+              #include <clip/clip.h>
+              #include <string>
+              void test() { clip::set_text("foo"); }
+          ]]}
+        ))
+    end)
+package_end()
+
 -- cross-platform clipboard api
-add_requires("clip 1.5")
+add_requires("clip")
 -- https
 add_requires("cpr 1.10.3", {configs = {ssl = true}})
 -- url
