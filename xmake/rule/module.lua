@@ -7,30 +7,6 @@ rule("module.program")
         end
     end)
 
-    after_link(function (target)
-        local enabled = target:extraconf("rules", "module.program", "upx")
-        if (not enabled) or (not is_mode("release")) then
-            return
-        end
-
-        import("core.project.depend")
-        import("lib.detect.find_tool")
-
-        local targetfile = target:targetfile()
-        depend.on_changed(function ()
-            local file = path.join("build", path.filename(targetfile))
-            local upx = assert(find_tool("upx"), "upx not found!")
-
-            os.tryrm(file)
-
-            local argv = table.wrap(target:values("upx.flags"))
-            table.insert(argv, targetfile)
-            table.insert(argv, "-o")
-            table.insert(argv, file)
-            os.vrunv(upx.program, argv)
-        end, {files = targetfile})
-    end)
-
 rule("module.component")
     on_load(function (target)
         if is_mode("debug") then

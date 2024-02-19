@@ -14,7 +14,6 @@ target("component")
 
 target("clear")
     add_rules("module.program")
-    set_values("upx.flags", "--best")
 
     add_files("main.cpp")
 
