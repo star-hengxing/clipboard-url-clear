@@ -19,7 +19,7 @@ elseif is_mode("release") then
 end
 
 if is_plat("windows") then
-    set_runtimes(is_mode("debug") and "MDd" or "MT")
+    set_runtimes("MD")
     add_defines("UNICODE", "_UNICODE")
     add_cxflags("/permissive-", {tools = "cl"})
 end

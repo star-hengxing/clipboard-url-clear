@@ -4,6 +4,25 @@ if is_mode("debug") then
     add_requireconfs("*", {configs = {shared = true}})
 end
 
+-- cross-platform clipboard api
+add_requires("clip")
+-- https
+add_requires("cpr 1.10.3", {configs = {ssl = true}})
+-- url
+add_requires("ada v2.6.7")
+-- debug/concat
+add_requires("fast_io")
+
+add_requires("cppitertools")
+
+if is_plat("windows") and is_mode("release") then
+    add_requires("vc-ltl5 5.0.7")
+end
+
+-- test
+
+add_requires("boost_ut v1.1.9", {optional = true})
+
 package("fast_io")
     set_kind("library", {headeronly = true})
     set_homepage("https://github.com/cppfastio/fast_io")
@@ -25,7 +44,6 @@ package("fast_io")
             }
         ]]}, {configs = {languages = "c++20"}}))
     end)
-package_end()
 
 package("clip")
     set_homepage("https://github.com/dacap/clip")
@@ -65,23 +83,3 @@ package("clip")
           ]]}
         ))
     end)
-package_end()
-
--- cross-platform clipboard api
-add_requires("clip")
--- https
-add_requires("cpr 1.10.3", {configs = {ssl = true}})
--- url
-add_requires("ada v2.6.7")
--- debug/concat
-add_requires("fast_io")
-
-add_requires("cppitertools")
-
-if is_plat("windows") and is_mode("release") then
-    add_requires("vc-ltl5 5.0.7")
-end
-
--- test
-
-add_requires("boost_ut v1.1.9", {optional = true})
