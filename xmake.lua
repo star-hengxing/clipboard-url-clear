@@ -15,6 +15,8 @@ add_rules("mode.debug", "mode.release")
 
 if is_mode("release") then
     set_optimize("smallest")
+elseif is_mode("debug") then
+    add_defines("LIBRARY_DEBUG")
 end
 
 if is_plat("windows") then

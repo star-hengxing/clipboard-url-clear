@@ -40,7 +40,3 @@
         #endif
     #endif
 #endif
-
-#if !defined(LIBRARY_DEBUG) && !defined(NDEBUG) && defined(DEBUG) && defined(_DEBUG)
-#define LIBRARY_DEBUG
-#endif
