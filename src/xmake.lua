@@ -16,7 +16,7 @@ target("component")
 
     add_cxxflags("cl::-wd4003", {public = true})
 
-    add_packages("clip", "cpr", "ada", "fast_io", "cppitertools")
+    add_packages("clip", "cpr", "ada", "zxing-cpp", "fast_io", "cppitertools")
 
 target("clear")
     add_rules("module.program")

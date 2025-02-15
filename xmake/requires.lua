@@ -4,19 +4,17 @@ if has_config("dev") then
     add_requireconfs("*", {configs = {shared = true}})
 end
 
--- cross-platform clipboard api
-add_requires("clip")
--- https
-add_requires("cpr", {configs = {ssl = true}})
--- url
-add_requires("ada")
--- debug/concat
-add_requires("fast_io")
-
-add_requires("cppitertools")
+add_requires(
+    "clip",         -- cross-platform clipboard api
+    "cpr[ssl]",     -- https request
+    "ada",          -- url
+    "zxing-cpp[reader=y,writer=n]",    -- qr code decoder
+    "fast_io",      -- debug/concat
+    "cppitertools"
+)
 
 if is_plat("windows") and is_mode("release") then
-    add_requires("vc-ltl5")
+    -- add_requires("vc-ltl5")
 end
 
 if has_config("test") then
