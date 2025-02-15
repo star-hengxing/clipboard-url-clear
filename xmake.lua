@@ -1,20 +1,19 @@
 set_project("clipboard-url-clear")
 
-set_version("0.0.3")
+set_version("0.1.0")
 
-set_xmakever("2.8.5")
+set_xmakever("2.9.8")
 
 set_allowedplats("windows")
 set_allowedmodes("debug", "release")
 
-set_languages("c++20")
+set_policy("compatibility.version", "3.0")
 
 set_warnings("all")
+set_languages("c++20")
 add_rules("mode.debug", "mode.release")
 
-if is_mode("debug") then
-    set_policy("build.warning", true)
-elseif is_mode("release") then
+if is_mode("release") then
     set_optimize("smallest")
 end
 

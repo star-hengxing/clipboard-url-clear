@@ -3,18 +3,23 @@ if is_plat("windows") then
 end
 
 target("component")
-    set_kind("$(kind)")
+    if has_config("dev") then
+        set_kind("shared")
+    else
+        set_kind("$(kind)")
+    end
+
     add_rules("module.component")
     add_files("*.cpp|main.cpp")
+    add_includedirs(os.scriptdir(), {interface = true})
     add_headerfiles("*.hpp")
 
-    add_cxxflags("cl::-wd4003")
+    add_cxxflags("cl::-wd4003", {public = true})
 
     add_packages("clip", "cpr", "ada", "fast_io", "cppitertools")
 
 target("clear")
     add_rules("module.program")
-
     add_files("main.cpp")
 
     if is_plat("windows") then

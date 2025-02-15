@@ -4,15 +4,17 @@
 #include <string>
 #include <string_view>
 
-void clipboard_handle() noexcept;
+#include "base/macro.hpp"
+
+LIBRARY_API void clipboard_handle() noexcept;
 // b23.tv/xxxxxxx
-std::string b23_to_source(const std::string_view short_url) noexcept;
+LIBRARY_API std::string b23_to_source(const std::string_view short_url) noexcept;
 // only support single link
-std::string get_clear_url(const std::string_view string) noexcept;
+LIBRARY_API std::string get_clear_url(const std::string_view string) noexcept;
 
-std::string get_location(const std::string_view response) noexcept;
+LIBRARY_API std::string get_location(const std::string_view response) noexcept;
 
-struct Table
+struct LIBRARY_API Table
 {
 public:
     const std::vector<std::string_view> domains;

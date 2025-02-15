@@ -1,8 +1,8 @@
 -- third party libraries
-includes("package.lua")
+includes("requires.lua")
 
 includes("pack.lua")
 -- project option
--- includes("option.lua")
+includes("options.lua")
 -- project module config
 includes("rule/module.lua")
