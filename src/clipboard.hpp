@@ -14,12 +14,12 @@ LIBRARY_API std::string get_clear_url(const std::string_view string) noexcept;
 
 LIBRARY_API std::string get_location(const std::string_view response) noexcept;
 
-struct LIBRARY_API Table
+struct Table
 {
 public:
     const std::vector<std::string_view> domains;
     const std::vector<std::vector<std::string_view>> url_keys;
 
 public:
-    static Table read(std::string_view string) noexcept;
+    LIBRARY_API static Table read(std::string_view string) noexcept;
 };
