@@ -14,7 +14,7 @@ add_requires(
 )
 
 if is_plat("windows") and is_mode("release") then
-    -- add_requires("vc-ltl5")
+    add_requires("vc-ltl5")
 end
 
 if has_config("test") then

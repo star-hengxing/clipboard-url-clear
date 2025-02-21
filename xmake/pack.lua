@@ -1,6 +1,6 @@
 includes("@builtin/xpack")
 
--- build/xpack/clear/clear.7z
+-- build/xpack/clipboard-url-clear/clear.7z
 xpack("clipboard-url-clear")
     set_formats("zip")
     set_extension(".7z")

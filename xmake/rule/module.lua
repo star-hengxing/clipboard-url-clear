@@ -1,10 +1,15 @@
 rule("module.program")
     on_load(function (target)
         target:set("kind", "binary")
-        target:set("rundir", os.projectdir())
-        -- if target:is_plat("windows") and target:has_runtime("MT") then
-        --     target:add("packages", "vc-ltl5")
-        -- end
+        if not target:get("rundir") then
+            target:set("rundir", os.projectdir())
+        end
+
+        if is_mode("release") then
+            if target:is_plat("windows") and target:has_runtime("MT") then
+                target:add("packages", "vc-ltl5")
+            end
+        end
     end)
 
 rule("module.component")
