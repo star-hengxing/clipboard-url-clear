@@ -6,8 +6,13 @@ rule("module.program")
         end
 
         if is_mode("release") then
-            if target:is_plat("windows") and target:has_runtime("MT") then
-                target:add("packages", "vc-ltl5")
+            if target:is_plat("windows") then
+                if not target:runtimes() then
+                    target:set("runtimes", "MT")
+                end
+                if target:has_runtime("MT") then
+                    target:add("packages", "vc-ltl5")
+                end
             end
         end
     end)
