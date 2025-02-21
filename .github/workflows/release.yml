@@ -1,0 +1,50 @@
+name: release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  windows:
+    strategy:
+      matrix:
+          - os: windows-latest
+            artifact_name: clear.7z
+            asset_name: clear-windows-x86_64.7z
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # WyriHaximus/github-action-get-previous-tag@master need it
+          fetch-depth: 0
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: '2.9.8'
+
+      - name: Package
+        run: |
+          xmake config --yes --policies=package.cmake_generator.ninja
+          xmake
+          xmake pack
+
+      - name: Get Previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@master
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/xpack/clipboard-url-clear/${{ matrix.artifact_name }}
+          asset_name: ${{ matrix.asset_name }}
+          tag: ${{ steps.previous_tag.outputs.tag }}
+          overwrite: true
