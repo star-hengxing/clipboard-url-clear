@@ -4,12 +4,17 @@ if has_config("dev") then
     add_requireconfs("*", {configs = {shared = true}})
 end
 
+local http_backend
+if has_config("http_backend") then
+    http_backend = get_config("http_backend") .. "[ssl]"
+end
+
 add_requires(
-    "clip",         -- cross-platform clipboard api
-    "cpr[ssl]",     -- https request
-    "ada",          -- url
-    "zxing-cpp[reader=y,writer=n]",    -- qr code decoder
-    "fast_io",      -- debug/concat
+    "clip",                         -- cross-platform clipboard api
+    http_backend,                   -- https request
+    "ada",                          -- url
+    "zxing-cpp[reader=y,writer=n]", -- qr code decoder
+    "fast_io",                      -- debug/concat
     "cppitertools"
 )
 

@@ -16,7 +16,13 @@ target("component")
 
     add_cxxflags("cl::-wd4003", {public = true})
 
-    add_packages("clip", "cpr", "ada", "zxing-cpp", "fast_io", "cppitertools")
+    add_packages("clip", "ada", "zxing-cpp", "fast_io", "cppitertools")
+    if get_config("http_backend") == "cpr" then
+        add_defines("HTTP_BACKEND_CPR")
+        add_packages("cpr")
+    else
+        add_packages("cpp-httplib")
+    end
 
 target("clear")
     add_rules("module.program")

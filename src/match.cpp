@@ -102,7 +102,11 @@ std::string get_clear_url(const std::string_view string) noexcept
     {
         // https://b23.tv/aaa?bbb
         url->set_search({});
+#ifdef HTTP_BACKEND_CPR
         return b23_to_source(url->get_href());
+#else
+        return b23_to_source(url->get_pathname());
+#endif
     }
 
     for (auto [i, domain] : iter::enumerate(database.domains))

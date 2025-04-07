@@ -1,2 +1,15 @@
-option("test", {default = true})
-option("dev", {default = true})
+option("dev")
+    set_default(true)
+    set_showmenu(true)
+    set_description("Enable development mode")
+
+option("test")
+    set_default(true)
+    set_showmenu(true)
+    set_description("Enable test")
+
+option("http_backend")
+    set_default("cpr")
+    set_showmenu(true)
+    set_description("Enable http backend")
+    set_values("cpr", "cpp-httplib")

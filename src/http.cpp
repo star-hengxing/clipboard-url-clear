@@ -1,8 +1,12 @@
 #include <string_view>
 #include <string>
 
-#include <fast_io.h>
-#include <cpr/cpr.h>
+#ifdef HTTP_BACKEND_CPR
+    #include <fast_io.h>
+    #include <cpr/cpr.h>
+#else
+    #include <httplib.h>
+#endif
 #include <cppitertools/enumerate.hpp>
 
 #include "clipboard.hpp"
@@ -38,6 +42,7 @@ std::string get_location(const std::string_view response) noexcept
 
 std::string b23_to_source(const std::string_view short_url) noexcept
 {
+#ifdef HTTP_BACKEND_CPR
     std::string tmp;
     std::string_view url;
     if (!short_url.starts_with("https"))
@@ -58,6 +63,14 @@ std::string b23_to_source(const std::string_view short_url) noexcept
     );
 
     auto const link = response.header["Location"];
+#else
+    httplib::Client client{"https://b23.tv"};
+    client.set_connection_timeout(0, 1000000); // 1000 milliseconds
+    httplib::Result result = client.Get(std::string{short_url});
+
+    auto const link = result->get_header_value("Location");
+#endif
+
     if (link.empty())
         return {};
 
